@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { ADD_ITEM_TO_CART } from "../../../reduxStore/action";
 import { IItem } from "../../../utility/types";
 
 const ItemDiv = styled.div`
   display: flex;
   flex-direction: column;
-  /* background: #b99a9a; */
 
   &:hover {
     box-shadow: 0 0 3px 3px lightgray;
@@ -76,11 +76,18 @@ interface IItemCardProps {
 }
 
 const ItemCard: React.FunctionComponent<IItemCardProps> = (props) => {
-  const { name, price, image_urls, discount_price } = props.item;
+  const { id, name, price, image_urls, discount_price } = props.item;
 
   const dispatch = useDispatch();
 
-  const handleAddCartButton = () => {};
+  const handleAddCartButton = () => {
+    dispatch({
+      type: ADD_ITEM_TO_CART,
+      payload: {
+        cartItem: { itemId: id, quantity: 1 },
+      },
+    });
+  };
 
   const itemName = name.length > 75 ? name.slice(0, 75) + "..." : name;
   return (
@@ -93,8 +100,8 @@ const ItemCard: React.FunctionComponent<IItemCardProps> = (props) => {
           {itemName}
         </div>
         <div className="item-price">
-          <div className="item-discount-price">{discount_price}</div>
-          <div className="item-actual-price">{price}</div>
+          <div className="item-discount-price">₹{discount_price}</div>
+          <div className="item-actual-price">₹{price}</div>
         </div>
         <button className="cart-button" onClick={handleAddCartButton}>
           Add to Cart

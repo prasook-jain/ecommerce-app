@@ -17,16 +17,10 @@ import styled from "styled-components";
 //   (cart) => cart
 // );
 
-const HeaderWrapper = styled.div`
+const CheckoutWrapper = styled.div`
   display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   height: 4rem;
   padding: 10px;
-  z-index: 1;
-  background-color: rosybrown;
 
   .logo {
     margin-right: auto;
@@ -37,17 +31,16 @@ const HeaderWrapper = styled.div`
   }
 `;
 
-const Header: React.FunctionComponent = () => {
+const Checkout: React.FunctionComponent = (props) => {
   const isLogedIn = false;
 
   return (
-    <HeaderWrapper>
+    <CheckoutWrapper>
       <div className="logo">Logo</div>
       <button className="right-side">Cart</button>
       <button>{isLogedIn ? "MyAccount" : "Login"}</button>
-      {/* Make logout button as well */}
-    </HeaderWrapper>
+    </CheckoutWrapper>
   );
 };
 
-export default Header;
+export default Checkout;

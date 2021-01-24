@@ -1,23 +1,35 @@
-import { IOrder, ICart, IUser, IItem } from "../utility/types";
-import { SET_ITEMS } from "./action";
+import {
+  IOrder,
+  ICart,
+  IUser,
+  IItemsHash,
+  ICategoryHash,
+} from "../utility/types";
+import {
+  SET_CART_TO_STORE,
+  SET_CATEGORIES,
+  SET_ITEMS,
+  UPDATE_CART,
+} from "./action";
 
 export interface IReduxStore {
   cart: ICart;
   user: IUser;
-  items: IItem[];
-  categories: string[];
+  itemsHash: IItemsHash;
+  categories: ICategoryHash;
   orders: IOrder[];
 }
 
 const initialState: IReduxStore = {
   cart: {
+    last_update_date: new Date(),
     items: [],
   },
   user: {
     type: "guest",
   },
-  items: [],
-  categories: [],
+  itemsHash: {},
+  categories: {},
   orders: [],
 };
 
@@ -26,7 +38,31 @@ const rootReducer = (state = initialState, action: any) => {
     case SET_ITEMS:
       state = {
         ...state,
-        items: [...action.items],
+        itemsHash: action.payload.itemsHash,
+      };
+      return state;
+    case SET_CATEGORIES:
+      state = {
+        ...state,
+        categories: action.payload.categories,
+      };
+      return state;
+    case SET_CART_TO_STORE:
+      state = {
+        ...state,
+        cart: {
+          ...state.cart,
+          ...action.payload.data,
+        },
+      };
+      return state;
+    case UPDATE_CART:
+      state = {
+        ...state,
+        cart: {
+          ...state.cart,
+          ...action.payload.data,
+        },
       };
       return state;
     default:

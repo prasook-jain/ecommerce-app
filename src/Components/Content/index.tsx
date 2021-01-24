@@ -3,39 +3,51 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import styled from "styled-components";
 
-import { FETCH_ITEMS } from "../../reduxStore/action";
+import CategorySection from "./CategorySection";
+import { FETCH_INITIAL_DATA } from "../../reduxStore/action";
 import { IReduxStore } from "../../reduxStore/reducer";
-import { IItem } from "../../utility/types";
-import ItemCard from "./ItemCard";
 
-const itemsSelector = createSelector<IReduxStore, any, IItem[]>(
-  (state) => state.items,
-  (items) => items
+/**
+ * Should be rendered only once or any new category gets added,
+ * This contain a major data of the app. Shouldn't be render more than required.
+ */
+export const getCategories = createSelector<
+  IReduxStore,
+  Array<{ id: string; name: string }>,
+  Array<{ id: string; name: string }>
+>(
+  (state) =>
+    Object.values(state.categories).map((category) => ({
+      id: category.id,
+      name: category.name,
+    })),
+  (categories) => categories
 );
 
-const GridDiv = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 300px;
   grid-template-rows: auto;
-  grid-gap: 1rem 1rem;
+  grid-gap: 1rem;
   justify-items: center;
-  background-color: #d8d8d8;
+  background-color: white;
 `;
 
 const Content = () => {
   const dispatch = useDispatch();
-  const items = useSelector(itemsSelector);
+  const categories = useSelector(getCategories);
 
   useEffect(() => {
-    dispatch({ type: FETCH_ITEMS });
+    dispatch({ type: FETCH_INITIAL_DATA });
   }, []);
 
   return (
-    <GridDiv>
-      {items.map((item) => (
-        <ItemCard key={item.id} item={item} />
+    <ContentWrapper>
+      {categories.map((category) => (
+        <CategorySection key={category.id} category={category} />
       ))}
-    </GridDiv>
+    </ContentWrapper>
   );
 };
 

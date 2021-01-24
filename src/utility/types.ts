@@ -18,7 +18,7 @@ export interface ICartItem {
 }
 
 export interface ICart {
-  last_update_date?: Date;
+  last_update_date: Date;
   items: ICartItem[];
 }
 
@@ -31,9 +31,23 @@ export interface IUser {
 export interface IItem {
   id: string;
   name: string;
-  price: string;
+  price: number;
   desciption: string;
   image_urls: string[];
   categories: string[];
-  discount_price: string;
+  discount_price: number;
+}
+
+export interface IItemsHash {
+  [key: string]: IItem;
+}
+
+export interface ICategory {
+  id: string;
+  name: string;
+  itemIds: string[];
+}
+
+export interface ICategoryHash {
+  [key: string]: ICategory;
 }
