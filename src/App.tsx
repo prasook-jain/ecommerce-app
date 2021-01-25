@@ -1,10 +1,12 @@
+import { Route, Switch, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import Header from "./Components/Header";
 import CartSideBar from "./Components/CartSidebar";
 import Content from "./Components/Content";
 import Checkout from "./Components/Checkout";
 import Login from "./Components/Login";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+
 import { getUser } from "./reduxStore/selectors";
 import { useEffect } from "react";
 import { FETCH_INITIAL_DATA } from "./reduxStore/action";
