@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import { ItemDiv } from "./style";
 import { ADD_ITEM_TO_CART } from "../../../reduxStore/action";

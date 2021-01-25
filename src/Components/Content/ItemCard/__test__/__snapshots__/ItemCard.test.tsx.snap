@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ItemCard :  renders correctly, snapshot test 1`] = `
+<div>
+  <div
+    class="sc-bdfBwQ inRgkj"
+  >
+    <div
+      class="item-image-container"
+    >
+      <img
+        alt="Spacewood Mayflower Engineered Wood Queen Box Bed"
+        class="item-image"
+        src="https://rukminim1.flixcart.com/image/312/312/jk8lz0w0/bed/g/e/z/queen-na-particle-board-kosmo-mayflower-queen-bed-box-spacewood-original-imaf7mtfdv8hfg6z.jpeg?q=70"
+      />
+    </div>
+    <div
+      class="item-details"
+    >
+      <div
+        class="item-name"
+        title="Spacewood Mayflower Engineered Wood Queen Box Bed"
+      >
+        Spacewood Mayflower Engineered Wood Queen Box Bed
+      </div>
+      <div
+        class="item-price"
+      >
+        <div
+          class="item-discount-price"
+        >
+          ₹
+          17790
+        </div>
+        <div
+          class="item-actual-price"
+        >
+          ₹
+          31140
+        </div>
+      </div>
+      <button
+        class="cart-button"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+`;
