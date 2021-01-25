@@ -24,6 +24,7 @@ export interface ICart {
 
 export interface IUser {
   type: "guest" | "user";
+  id?: string;
   email?: string;
   username?: string;
   hash_token?: string;

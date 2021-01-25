@@ -1,18 +1,18 @@
 {
   "users": [
     {
+      "id": "user1",
       "username": "prasook",
       "password": "password",
       "email": "prasookjain@gmail.com",
-      "hash_token": "1f50b99edc34a791b90670e845b9b718",
-      "orderIds": []
+      "hash_token": "1f50b99edc34a791b90670e845b9b718"
     },
     {
+      "id": "user2",
       "username": "demo_user",
       "password": "password",
       "email": "demo@demo.com",
-      "hash_token": "a67920e8c7e886c693c1050688d10f7f",
-      "orderIds": []
+      "hash_token": "a67920e8c7e886c693c1050688d10f7f"
     }
   ],
   "orders": [],

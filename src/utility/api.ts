@@ -1,4 +1,3 @@
-import { rejects } from "assert";
 import mockBackend from "./mock.json";
 import { IOrder } from "./types";
 
@@ -34,10 +33,10 @@ export const login = async (username: string, password: string) => {
       if (user.username === username && user.password === password) {
         userMatched = true;
         userObj = {
+          id: user.id,
           email: user.email,
           name: user.username,
           hash_token: user.hash_token,
-          orderIds: user.orderIds,
         };
       }
     });

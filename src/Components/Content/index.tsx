@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "reselect";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
 
 import CategorySection from "./CategorySection";
-import { FETCH_INITIAL_DATA } from "../../reduxStore/action";
+
 import { IReduxStore } from "../../reduxStore/reducer";
 
 /**
@@ -35,12 +34,7 @@ const ContentWrapper = styled.div`
 `;
 
 const Content = () => {
-  const dispatch = useDispatch();
   const categories = useSelector(getCategories);
-
-  useEffect(() => {
-    dispatch({ type: FETCH_INITIAL_DATA });
-  }, []);
 
   return (
     <ContentWrapper>

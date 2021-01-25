@@ -1,12 +1,15 @@
 import { connect, useDispatch } from "react-redux";
+
 import { CartItemWrapper } from "./style";
+import QuantityInput from "../../QuantityInput";
+
 import {
-  REMOVE_ITEM_FROM_CART,
   UPDATE_ITEM_OF_CART,
+  REMOVE_ITEM_FROM_CART,
 } from "../../../reduxStore/action";
 import { IReduxStore } from "../../../reduxStore/reducer";
+
 import { ICartItem, IItem } from "../../../utility/types";
-import QuantityInput from "../../QuantityInput";
 
 interface ICartItemProps {
   item: IItem;

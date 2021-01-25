@@ -1,12 +1,12 @@
-import { Button, Form, Input, message } from "antd";
-import { login } from "../../utility/api";
 import styled from "styled-components";
-import "antd/dist/antd.css";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Button, Form, Input, message } from "antd";
 
+import { login } from "../../utility/api";
 import { SET_USER } from "../../reduxStore/action";
-import { IUser } from "../../utility/types";
+
+import "antd/dist/antd.css";
 
 const Wrapper = styled.div`
   height: 100vh;

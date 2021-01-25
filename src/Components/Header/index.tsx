@@ -1,21 +1,25 @@
-import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { useHistory } from "react-router-dom";
-import { IReduxStore } from "../../reduxStore/reducer";
-import { ICart, IUser } from "../../utility/types";
 import styled from "styled-components";
-import { getUser } from "../../reduxStore/selectors";
+import { createSelector } from "reselect";
 import { Button, Dropdown, Menu } from "antd";
-import "antd/dist/antd.css";
+import { useHistory } from "react-router-dom";
+import { ShopOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+
+import { IReduxStore } from "../../reduxStore/reducer";
+import { getOrdersCount, getUser } from "../../reduxStore/selectors";
 import { SET_USER } from "../../reduxStore/action";
 
-const cartItemCountSelector = createSelector<IReduxStore, any, ICart>(
+import { IUser } from "../../utility/types";
+import "antd/dist/antd.css";
+
+const cartItemCountSelector = createSelector<IReduxStore, number, number>(
   (state) => state.cart.items.length,
   (length) => length
 );
 
 const HeaderWrapper = styled.div`
   display: flex;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -23,7 +27,7 @@ const HeaderWrapper = styled.div`
   height: 4rem;
   padding: 10px;
   z-index: 1;
-  background-color: rosybrown;
+  background-color: darkgrey;
 
   .logo {
     margin-right: auto;
@@ -37,6 +41,7 @@ const HeaderWrapper = styled.div`
 
 const MenuDropdown = (props) => {
   const { user } = props;
+  const ordersCount = useSelector(getOrdersCount);
   const dispatch = useDispatch();
   const handleLogout = () => {
     const user: IUser = {
@@ -54,7 +59,9 @@ const MenuDropdown = (props) => {
   return (
     <Menu>
       <Menu.Item key="profile-details">As {user.name}</Menu.Item>
-      <Menu.Item key="order">Orders</Menu.Item>
+      <Menu.Item key="order" disabled>
+        Orders ({ordersCount})
+      </Menu.Item>
       <Menu.Item key="logout">
         <Button onClick={handleLogout}>Logout</Button>
       </Menu.Item>
@@ -80,11 +87,14 @@ const Header: React.FunctionComponent = () => {
 
   return (
     <HeaderWrapper>
-      <div className="logo">Logo</div>
+      <div className="logo">
+        <ShopOutlined style={{ fontSize: "40px" }} />
+      </div>
       <Button
         type="primary"
         shape="round"
         className="right-side"
+        disabled={cartItemCount === 0}
         onClick={goToCheckout}
       >{`Cart (${cartItemCount})`}</Button>
       {isUserLogedIn ? (

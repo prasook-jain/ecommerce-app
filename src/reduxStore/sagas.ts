@@ -1,3 +1,4 @@
+import { message } from "antd";
 import {
   put,
   all,
@@ -12,7 +13,6 @@ import {
   getUserOrders,
   isUserValid,
 } from "../utility/api";
-import { ICart, IUser } from "../utility/types";
 import {
   UPDATE_CART,
   SET_CATEGORIES,
@@ -23,8 +23,12 @@ import {
   UPDATE_ITEM_OF_CART,
   REMOVE_ITEM_FROM_CART,
   SET_USER,
+  SET_USER_ORDERS,
+  PLACE_ORDER,
+  ADD_ORDER,
 } from "./action";
 import { getCart, getUser } from "./selectors";
+import { ICart } from "../utility/types";
 
 /**
  * Fetch required itemHash for Homepage from backend.
@@ -50,22 +54,11 @@ function* fetchCategories() {
   }
 }
 
-/**
- * Fetch Initial Data values from fetch items
- */
-function* fetchIntialData() {
-  try {
-    yield all([call(fetchItems), call(fetchCategories)]);
-    yield call(setCartDataToStore);
-    yield call(setUserFromStore);
-  } catch (error) {}
-}
-
 function* fetchUserOrders(action: any) {
   try {
     const userId = action.payload.userId;
     const userOrders = yield call(getUserOrders, userId);
-    yield put({ type: "SET_USER_ORDERS", userOrders });
+    yield put({ type: SET_USER_ORDERS, orders: userOrders });
   } catch (error) {
     console.log("Error in fetching user orders");
   }
@@ -113,6 +106,42 @@ function* setUserFromStore() {
   } catch (error) {}
 }
 
+/**
+ * Fetch Initial Data values from backend
+ */
+function* fetchIntialData() {
+  try {
+    yield all([call(fetchItems), call(fetchCategories)]);
+    yield call(setCartDataToStore);
+    yield call(setUserFromStore);
+    const user = yield select(getUser);
+    if (user.type === "user") {
+      const userId = user.id;
+      yield call(fetchUserOrders, { payload: userId });
+    }
+  } catch (error) {}
+}
+
+function* placeOrderSaga(action) {
+  try {
+    // remove values from cart & redux store
+    yield localStorage.setItem("cart", JSON.stringify(""));
+    yield put({
+      type: UPDATE_CART,
+      payload: {
+        data: {
+          last_update_data: new Date(),
+          items: [],
+        },
+      },
+    });
+    yield put({ type: ADD_ORDER, payload: action.payload.order });
+    yield action.payload?.callbackFn?.();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 function* addItemToCartSaga(action: any) {
   try {
     const curCartState: ICart = yield select(getCart);
@@ -124,6 +153,7 @@ function* addItemToCartSaga(action: any) {
       }
     });
     if (isAlreadyPresent) {
+      message.info("Item already present in the cart.");
       return;
     }
     const cartData = {
@@ -179,6 +209,7 @@ function* mySaga() {
   yield takeLatest(SET_CART_TO_STORE, setCartDataToStore);
   yield takeLatest(ADD_ITEM_TO_CART, addItemToCartSaga);
   yield takeEvery(UPDATE_ITEM_OF_CART, updateItemOfCartSaga);
+  yield takeEvery(PLACE_ORDER, placeOrderSaga);
   yield takeEvery(REMOVE_ITEM_FROM_CART, removeItemFromCartSaga);
 }
 

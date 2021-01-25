@@ -1,10 +1,12 @@
+import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getCart, getItemHash } from "../../reduxStore/selectors";
+
 import CartItem from "./CartItem";
 import { SidebarWrapper } from "./style";
-import { createSelector } from "reselect";
+
 import { IReduxStore } from "../../reduxStore/reducer";
+import { getCart, getItemHash } from "../../reduxStore/selectors";
 import { ICart, IItemsHash } from "../../utility/types";
 
 const getTotalSelector = createSelector<IReduxStore, ICart, IItemsHash, number>(

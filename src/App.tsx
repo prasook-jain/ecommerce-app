@@ -4,12 +4,20 @@ import Content from "./Components/Content";
 import Checkout from "./Components/Checkout";
 import Login from "./Components/Login";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./reduxStore/selectors";
+import { useEffect } from "react";
+import { FETCH_INITIAL_DATA } from "./reduxStore/action";
 
 function App() {
   const user = useSelector(getUser);
   const isLogedIn = user.type === "user";
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: FETCH_INITIAL_DATA });
+  }, []);
+
   return (
     <div>
       <Switch>

@@ -1,9 +1,4 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-
-// const shouldDisableDecrement = (quantity: string): boolean => {
-//   return inputStrToInt(quantity) === 1 ? false : true;
-// };
 
 const inputStrToInt = (value) => parseInt(value || "1", 10);
 

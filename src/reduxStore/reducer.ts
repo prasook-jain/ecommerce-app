@@ -6,10 +6,12 @@ import {
   ICategoryHash,
 } from "../utility/types";
 import {
+  ADD_ORDER,
   SET_CART_TO_STORE,
   SET_CATEGORIES,
   SET_ITEMS,
   SET_USER,
+  SET_USER_ORDERS,
   UPDATE_CART,
 } from "./action";
 
@@ -73,6 +75,18 @@ const rootReducer = (state = initialState, action: any) => {
           ...state.user,
           ...action.payload.user,
         },
+      };
+      return state;
+    case SET_USER_ORDERS:
+      state = {
+        ...state,
+        orders: action.payload.orders,
+      };
+      return state;
+    case ADD_ORDER:
+      state = {
+        ...state,
+        orders: [...state.orders, action.payload],
       };
       return state;
     default:

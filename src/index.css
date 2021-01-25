@@ -16,6 +16,7 @@ html {
   --scrollbarBG: #cfd8dc;
   --thumbBG: #90a4ae;
 }
+
 *::-webkit-scrollbar {
   width: 11px;
 }

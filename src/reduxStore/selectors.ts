@@ -16,3 +16,8 @@ export const getItemHash = createSelector<IReduxStore, IItemsHash, IItemsHash>(
   (state) => state.itemsHash,
   (itemsHash) => itemsHash
 );
+
+export const getOrdersCount = createSelector<IReduxStore, number, number>(
+  (state) => state.orders.length,
+  (ordersCount) => ordersCount
+);
