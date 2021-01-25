@@ -11,6 +11,7 @@ export const UPDATE_ITEM_OF_CART = "UPDATE_ITEM_OF_CART";
 export const REMOVE_ITEM_FROM_CART = "REMOVE_ITEM_FROM_CART";
 
 // User Action
-export const FETCH_USER_ORDERS = "FETCH_USER_ORDERS";
-export const SET_USER_ORDERS = "SET_USER_ORDERS";
+export const SET_USER = "SET_USER";
 export const PLACE_ORDER = "PLACE_ORDER";
+export const SET_USER_ORDERS = "SET_USER_ORDERS";
+export const FETCH_USER_ORDERS = "FETCH_USER_ORDERS";

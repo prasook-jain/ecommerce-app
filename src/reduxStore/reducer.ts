@@ -9,6 +9,7 @@ import {
   SET_CART_TO_STORE,
   SET_CATEGORIES,
   SET_ITEMS,
+  SET_USER,
   UPDATE_CART,
 } from "./action";
 
@@ -62,6 +63,15 @@ const rootReducer = (state = initialState, action: any) => {
         cart: {
           ...state.cart,
           ...action.payload.data,
+        },
+      };
+      return state;
+    case SET_USER:
+      state = {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload.user,
         },
       };
       return state;

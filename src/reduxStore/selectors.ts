@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { IReduxStore } from "./reducer";
-import { ICart, ICategory, IItemsHash, IUser } from "../utility/types";
+import { ICart, IItemsHash, IUser } from "../utility/types";
 
 export const getUser = createSelector<IReduxStore, IUser, IUser>(
   (state) => state.user,

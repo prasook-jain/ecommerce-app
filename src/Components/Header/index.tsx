@@ -1,21 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useHistory } from "react-router-dom";
 import { IReduxStore } from "../../reduxStore/reducer";
 import { ICart, IUser } from "../../utility/types";
 import styled from "styled-components";
-// interface HeaderProps {
-//   userDetails: Object;
-// }
+import { getUser } from "../../reduxStore/selectors";
+import { Button, Dropdown, Menu } from "antd";
+import "antd/dist/antd.css";
+import { SET_USER } from "../../reduxStore/action";
 
-// const userSelector = createSelector<IReduxStore, any, IUser>(
-//   (state) => state.user,
-//   (user) => user
-// );
-
-// const cartSelector = createSelector<IReduxStore, any, ICart>(
-//   (state) => state.cart,
-//   (cart) => cart
-// );
+const cartItemCountSelector = createSelector<IReduxStore, any, ICart>(
+  (state) => state.cart.items.length,
+  (length) => length
+);
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -34,18 +31,73 @@ const HeaderWrapper = styled.div`
 
   .right-side {
     margin-left: auto;
+    margin-right: 1rem;
   }
 `;
 
+const MenuDropdown = (props) => {
+  const { user } = props;
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    const user: IUser = {
+      type: "guest",
+    };
+    localStorage.setItem("user", JSON.stringify(user));
+    dispatch({
+      type: SET_USER,
+      payload: {
+        user,
+      },
+    });
+  };
+
+  return (
+    <Menu>
+      <Menu.Item key="profile-details">As {user.name}</Menu.Item>
+      <Menu.Item key="order">Orders</Menu.Item>
+      <Menu.Item key="logout">
+        <Button onClick={handleLogout}>Logout</Button>
+      </Menu.Item>
+    </Menu>
+  );
+};
+
 const Header: React.FunctionComponent = () => {
-  const isLogedIn = false;
+  const history = useHistory();
+
+  const cartItemCount = useSelector(cartItemCountSelector);
+  const user = useSelector(getUser);
+
+  const isUserLogedIn = user.type === "user";
+
+  const handleLogIn = () => {
+    history.push("/login");
+  };
+
+  const goToCheckout = () => {
+    history.push("/checkout");
+  };
 
   return (
     <HeaderWrapper>
       <div className="logo">Logo</div>
-      <button className="right-side">Cart</button>
-      <button>{isLogedIn ? "MyAccount" : "Login"}</button>
-      {/* Make logout button as well */}
+      <Button
+        type="primary"
+        shape="round"
+        className="right-side"
+        onClick={goToCheckout}
+      >{`Cart (${cartItemCount})`}</Button>
+      {isUserLogedIn ? (
+        <Dropdown overlay={<MenuDropdown user={user} />}>
+          <Button type="primary" shape="round">
+            MyAccount
+          </Button>
+        </Dropdown>
+      ) : (
+        <Button type="primary" shape="round" onClick={handleLogIn}>
+          Login
+        </Button>
+      )}
     </HeaderWrapper>
   );
 };

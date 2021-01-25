@@ -6,19 +6,25 @@ import {
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
-import { getCategories, getItems, getUserOrders } from "../utility/api";
-import { ICart } from "../utility/types";
 import {
-  UPDATE_ITEM_OF_CART,
+  getCategories,
+  getItems,
+  getUserOrders,
+  isUserValid,
+} from "../utility/api";
+import { ICart, IUser } from "../utility/types";
+import {
   UPDATE_CART,
+  SET_CATEGORIES,
+  ADD_ITEM_TO_CART,
   FETCH_USER_ORDERS,
   SET_CART_TO_STORE,
-  ADD_ITEM_TO_CART,
-  REMOVE_ITEM_FROM_CART,
-  SET_CATEGORIES,
   FETCH_INITIAL_DATA,
+  UPDATE_ITEM_OF_CART,
+  REMOVE_ITEM_FROM_CART,
+  SET_USER,
 } from "./action";
-import { getCart } from "./selectors";
+import { getCart, getUser } from "./selectors";
 
 /**
  * Fetch required itemHash for Homepage from backend.
@@ -51,6 +57,7 @@ function* fetchIntialData() {
   try {
     yield all([call(fetchItems), call(fetchCategories)]);
     yield call(setCartDataToStore);
+    yield call(setUserFromStore);
   } catch (error) {}
 }
 
@@ -83,6 +90,27 @@ function* setCartDataToStore() {
   } catch (error) {
     console.log("Error in setting cart data from localstorage");
   }
+}
+
+function* setUserFromStore() {
+  try {
+    const curUserState = select(getUser);
+    const curUser =
+      JSON.parse(localStorage.getItem("user") || "") || curUserState;
+
+    const hash_token = curUser.hash_token;
+    const validUser = yield isUserValid(hash_token);
+
+    const user = validUser ? curUser : { type: "guest" };
+
+    localStorage.setItem("user", JSON.stringify(user));
+    yield put({
+      type: SET_USER,
+      payload: {
+        user,
+      },
+    });
+  } catch (error) {}
 }
 
 function* addItemToCartSaga(action: any) {

@@ -1,3 +1,4 @@
+import { rejects } from "assert";
 import mockBackend from "./mock.json";
 import { IOrder } from "./types";
 
@@ -28,17 +29,31 @@ export const getUserOrders = async (userId: string) => {
 export const login = async (username: string, password: string) => {
   return await new Promise((resolve, reject) => {
     let userMatched = false;
-    let userToken;
+    let userObj: any = "";
     mockBackend.users.forEach((user) => {
       if (user.username === username && user.password === password) {
         userMatched = true;
-        userToken = user.hash_token;
+        userObj = {
+          email: user.email,
+          name: user.username,
+          hash_token: user.hash_token,
+          orderIds: user.orderIds,
+        };
       }
     });
     if (userMatched) {
-      resolve(userToken);
+      resolve(userObj);
     } else {
       reject("Invalid Credentials");
     }
+  });
+};
+
+export const isUserValid = async (user_token: string) => {
+  return await new Promise((resolve, reject) => {
+    const isValidUser = mockBackend.users.some(
+      (user) => user.hash_token === user_token
+    );
+    resolve(isValidUser);
   });
 };

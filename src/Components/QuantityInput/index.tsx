@@ -44,7 +44,6 @@ const QuantityInput = (props: any) => {
     }
   };
 
-  console.log(typeof quantity, quantity);
   return (
     <Wrapper>
       <button onClick={increment}>+</button>

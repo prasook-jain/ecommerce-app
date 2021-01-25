@@ -1,44 +1,43 @@
+import { Button, List } from "antd";
 import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { IReduxStore } from "../../reduxStore/reducer";
-import { ICart, IUser } from "../../utility/types";
 import styled from "styled-components";
-// interface HeaderProps {
-//   userDetails: Object;
-// }
+import { getCart, getItemHash } from "../../reduxStore/selectors";
 
-// const userSelector = createSelector<IReduxStore, any, IUser>(
-//   (state) => state.user,
-//   (user) => user
-// );
-
-// const cartSelector = createSelector<IReduxStore, any, ICart>(
-//   (state) => state.cart,
-//   (cart) => cart
-// );
-
-const CheckoutWrapper = styled.div`
-  display: flex;
-  height: 4rem;
-  padding: 10px;
-
-  .logo {
-    margin-right: auto;
-  }
-
-  .right-side {
-    margin-left: auto;
-  }
-`;
+const CheckoutWrapper = styled.div``;
 
 const Checkout: React.FunctionComponent = (props) => {
-  const isLogedIn = false;
+  const cartData = useSelector(getCart);
+  const itemsHash = useSelector(getItemHash);
+
+  const cartItems = cartData.items.map((cartItem) => {
+    return {
+      ...itemsHash[cartItem.itemId],
+      quantity: cartItem.quantity,
+    };
+  });
+
+  const handleConfirm = () => {
+    console.log("handleConfirm");
+  };
 
   return (
     <CheckoutWrapper>
-      <div className="logo">Logo</div>
-      <button className="right-side">Cart</button>
-      <button>{isLogedIn ? "MyAccount" : "Login"}</button>
+      <h1>Checkout</h1>
+      <List
+        itemLayout="vertical"
+        size="large"
+        dataSource={cartItems}
+        footer={<Button onClick={handleConfirm}>Confirm</Button>}
+        renderItem={(item) => (
+          <List.Item
+            key={item.id}
+            extra={<img width={272} alt={item.name} src={item.image_urls[0]} />}
+          >
+            <List.Item.Meta title={item.name} />
+            {item.name}
+          </List.Item>
+        )}
+      />
     </CheckoutWrapper>
   );
 };

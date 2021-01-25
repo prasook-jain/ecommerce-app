@@ -26,6 +26,8 @@ export interface IUser {
   type: "guest" | "user";
   email?: string;
   username?: string;
+  hash_token?: string;
+  name?: string;
 }
 
 export interface IItem {

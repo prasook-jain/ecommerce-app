@@ -1,25 +1,30 @@
 import Header from "./Components/Header";
-import Cart from "./Components/Cart";
 import CartSideBar from "./Components/CartSidebar";
-import Footer from "./Components/Footer";
 import Content from "./Components/Content";
 import Checkout from "./Components/Checkout";
 import Login from "./Components/Login";
-import styled from "styled-components";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getUser } from "./reduxStore/selectors";
 
 function App() {
-  const isLogedIn = false;
+  const user = useSelector(getUser);
+  const isLogedIn = user.type === "user";
   return (
-    <div style={{ marginTop: "4rem" }}>
-      <Header />
+    <div>
       <Switch>
         <Route exact path="/">
-          <Content />
-          <CartSideBar />
+          <div style={{ marginTop: "4rem" }}>
+            <Header />
+            <Content />
+            <CartSideBar />
+          </div>
         </Route>
         <Route exact path="/checkout">
-          {isLogedIn ? <Checkout /> : <Redirect to={"/login"} />}
+          <div style={{ marginTop: "4rem" }}>
+            <Header />
+            {isLogedIn ? <Checkout /> : <Redirect to={"/login"} />}
+          </div>
         </Route>
         <Route exact path="/login">
           <Login />
